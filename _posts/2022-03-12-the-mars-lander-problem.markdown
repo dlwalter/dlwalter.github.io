@@ -6,6 +6,8 @@ categories: cpp
 ---
 I was recently introduced to a clever coding problem called [The Mars Lander - Episode 2](https://www.codingame.com/training/medium/mars-lander-episode-2) and found it a fun application of some basic control theory.
 
+![](/assets/img/mars-lander.png)
+
 ## The Problem
 
 A simplified 2-D space craft is trying to land autonomously on Mars.  Controlling the angle and thrust of the aircraft, you need to write an algorithm that can land on level ground within certain parameters (speed, angle, etc) before running out of fuel.
