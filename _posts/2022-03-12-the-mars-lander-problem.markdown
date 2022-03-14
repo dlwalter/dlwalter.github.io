@@ -20,6 +20,16 @@ Here's how I solved the problem.  The general flight control is 2 cascaded propo
 
 If you want to try out my solution I've saved [a gist located here](https://gist.github.com/dlwalter/dc3a7119548f71f0a6133030bb3ae219)
 
+What's a cascaded proportional controller?  
+
+First, let's discuss a controller - in this case a PID controller.  PID stands for "Proportional, Integral, and Derivative" and is at the core keeping many industrial and commercial systems at a desired setpoint.  The P (Proportional) term means that setpoint error is multiplied by a scalar "proportional gain" to generate the controller output.  There are lots of scientific methods to calculate valid gains that ensure stability but in this example we're just going to manually tune the system to get some reasonable outputs.
+
+The "integral" and "derivative" terms can be used to dial in smoother performance but I'm not going to use those terms for now, so really I'm just using a P controller.
+
+"Cascaded" means we're taking the output of one controller and feeding that into a second controller as a setpoint.  So from our position and position setpoint we calculate a position error, multiple that position error by the proportional gain to get a velocity setpoint and feeding that velocity setpoint into a second velocity controller to get a thrust.
+
+![](/assets/img/control-diagram.png)
+
 
 ### Finding the Landing Zone
 
@@ -49,10 +59,12 @@ std::vector<CoordXY> surface_coordinates_xy;
 ### Controlling Position
 
 
+
+
 ### Ensuring Feasible Control
 
 
- Here's the [replay of the solution in action](https://www.codingame.com/replay/613172447)
+Here's the [replay of the solution in action](https://www.codingame.com/replay/613172447)
 
 
 {% highlight cpp %}
