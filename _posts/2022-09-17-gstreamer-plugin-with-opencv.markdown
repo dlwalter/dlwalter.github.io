@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Making a GStreamer Plugin with OpenCV"
+title:  "Making a GStreamer Plugin with OpenCV (Part 1)"
 date:   2022-09-18 12:34:00 -0800
 ---
 I decided to dust off the GStreamer toolbox and try doing something fancier than just passing buffers using OpenCV.  To change it up, I also wanted to incorporate the code as a GStreamer plugin - that way it could be brought in to any pipeline with the gst factory method `gst_element_factory_make("myfilter", "myfilter0")`.  I usually lean on the `appsink`/`appsrc` method and pass the buffers between the two blocks, but figured this would be a good excercise and would scale better.
@@ -10,7 +10,7 @@ The first thing I did was setup a docker image with the GStreamer and OpenCV dev
 So the sequence looked something like this:
 1. Setup a basic GStreamer pipeline using a GLib mainloop to generate a test video of a ball bouncing around and send it over UDP to my host computer.
 2. Setup a GStreamer plugin called `myfilter` and add it to my pipeline in `main.cpp`.  To start it wouldn't do anything, just pass the buffers from the sink pad to the src pad.
-3. Add the OpenCV libraries to my plugin.  This involves changing the Gstreamer boilerplate `meson.build` to compile with `c++` instead of `c`.
+3. Add the OpenCV libraries to the plugin.  This involves changing the Gstreamer boilerplate `meson.build` to compile with `c++` instead of `c`.
 4. In the plugin get the video frame out of the `GstBuffer` format and into `cv::Mat` so OpenCV can use it.  Then I'll have to extract the data from the `cv::Mat` and put it back into the `GstBuffer` so it can run through the remaining downstream GStreamer pipeline.
 
 
