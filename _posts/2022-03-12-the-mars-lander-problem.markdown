@@ -16,11 +16,11 @@ You are presented with a game loop that spits out state information to stdin, an
 
 ## A Solution
 
-Here's how I solved the problem.  The general flight control is 2 cascaded proportional controllers to control horizontal position and velocity, and then a single proportional controller to control vertical velocity.
-
 If you want to try out my solution I've saved [a gist located here](https://gist.github.com/dlwalter/dc3a7119548f71f0a6133030bb3ae219)
 
-What's a cascaded proportional controller?  
+Here's how I solved the problem.  The general flight control is 2 cascaded proportional controllers to control horizontal position and velocity, and then a single proportional controller to control vertical velocity.
+
+What's a cascaded proportional controller?
 
 First, let's discuss a controller - in this case a PID controller.  PID stands for "Proportional, Integral, and Derivative" and is at the core keeping many industrial and commercial systems at a desired setpoint.  The P (Proportional) term means that setpoint error is multiplied by a scalar "proportional gain" to generate the controller output.  There are lots of scientific methods to calculate valid gains that ensure stability but in this example we're just going to manually tune the system to get some reasonable outputs.
 
@@ -50,11 +50,24 @@ typedef struct /_landing_setpoint {
 } landing_setpoint_t;
 {% endhighlight %}
 
-So now I am ready to read the surface coordinates from stdin.  I'll use a std::vector<CoordXY> - a vector of our CoordXY object.
+So now I am ready to read the surface coordinates from stdin.  I'll use a std::vector<CoordXY> - a vector of our CoordXY object.  I chose a vector so I can iterate throught it and easily push, pop, or insert elements if needed.
 
-```
+Some of this is boilerplate given by the challenge template, but you can see packing the coordinates into the CoordXY typedef and then pushing it onto our vector:
+
+{% highlight cpp %}
 std::vector<CoordXY> surface_coordinates_xy;
-```
+std::cin >> surface_n; std::cin.ignore();
+for (int i = 0; i < surface_n; i++) {
+    double land_x; // X coordinate of a surface point. (0 to 6999)
+    double land_y; // Y coordinate of a surface point. By linking all the points together in a sequential fashion, you form the surface of Mars.
+    std::cin >> land_x >> land_y; std::cin.ignore();
+    surface_coordinates_xy.push_back(CoordXY(land_x, land_y));
+}
+{% endhighlight %}
+
+Now I'll need a function that can handle that surface vector and return the landing zone along with its radius.
+
+
 
 ### Controlling Position
 
